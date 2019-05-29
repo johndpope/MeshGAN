@@ -1,0 +1,3 @@
+gender= female
+subj_ids= 50004 50020 50021 50022 50025 
+seq_names= hips knees light_hopping_stiff light_hopping_loose jiggle_on_toes one_leg_loose shake_arms chicken_wings punching shake_shoulders shake_hips jumping_jacks one_leg_jump running_on_spot
