@@ -6,95 +6,122 @@ import h5py
 
 
 class MeshAE:
-    def __init__(self, matpath, max_degree=2, padding=False, result_max1=0.9, result_min1=-0.9):
+    def __init__(self, matpath, gc_dim, fc_dim, max_degree=2, sparse=False, padding=False, result_max1=0.9, result_min1=-0.9):
         self.logdr, self.s, self.e_neighbour, self.p_neighbour,\
-        self.degree, self.logdr_min, self.logdr_max, self.ds_min,\
-        self.ds_max, self.modelnum, self.pointnum, self.edgenum, self._old_maxdegree\
+            self.degree, self.logdr_min, self.logdr_max, self.ds_min,\
+            self.ds_max, self.modelnum, self.pointnum, self.edgenum, self._old_maxdegree\
             = load_data(matpath, logdr_ismap=True, s_ismap=False)
+        self.gc_dim = gc_dim
+        self.fc_dim = fc_dim
         self.max_degree = max_degree
-        support_e = chebyshev_polynomials(self.e_neighbour, self.max_degree)
-        support_p = chebyshev_polynomials(self.p_neighbour, self.max_degree)
+        self.sparse = sparse
 
-        placeholders = {
-            'support': [tf.sparse_placeholder(tf.float32) for _ in range(self.max_degree)],
-            'dropout': tf.placeholder_with_default(0., shape=()),
-        }
+        """Make Placholder for RIMD"""
+        logdr_shape = np.shape(self.logdr)
+        self.placeholder_logdr = tf.placeholder(tf.float32, [None, logdr_shape[1], logdr_shape[2]])
+
+        s_shape = np.shape(self.s)
+        self.placeholder_s = tf.placeholder(tf.float32, [None, s_shape[1], s_shape[2]])
+
+        """Make Placeholder for Input"""
+        self.input = tf.placeholder(tf.float32, [None, logdr_shape[1], 3])
+        
+        """Get Chebyshev Sequence"""
+        self.cheb_e = chebyshev_polynomials(self.e_neighbour, self.max_degree)
+        self.cheb_p = chebyshev_polynomials(self.p_neighbour, self.max_degree)
+        if not self.sparse:
+            self.cheb_e = tf.sparse.to_dense(self.cheb_e)
+            self.cheb_p = tf.sparse.to_dense(self.cheb_p)
+
+        """Logdr AutoEncoder"""
+        self.ae_logdr = AutoEncoder(self.placeholder_logdr, self.gc_dim, self.fc_dim, self.cheb_e, self.sparse)
+
+        """Logdr AutoEncoder"""
+        self.ae_s = AutoEncoder(self.placeholder_s, self.gc_dim, self.fc_dim, self.cheb_p, self.sparse)
+
+        """Output"""
+        self.output_logdr = self.ae_logdr.output
+        self.output_s = self.ae_s.output
 
 
 class AutoEncoder:
-    def __init__(self, input_dim, gc_dim, fc_dim, placeholders, lr=1e-3):
+    def __init__(self, input, gc_dim, fc_dim, cheb, sparse=False, lr=1e-3, output_dim=None):
         """Get Input and its dimension"""
-        self.input = tf.placeholder(tf.float32, input_dim, 'input')
+        self.input = input
+        input_dim = input.get_shape().as_list()
         self.input_dim = input_dim[-1]
+        self.output_dim = output_dim
         self.point_num = input_dim[-2]
         self.batch_size = input_dim[0]
         self.gc_dim = gc_dim
         self.fc_dim = fc_dim
         """Get Other Members"""
-        self.placeholders = placeholders
+        self.sparse = sparse
         self.optimizer = tf.train.AdamOptimizer(learning_rate=lr)
         self.logging = True
         """Build the Network"""
         self.latent = None
         self.output = None
+        self.cheb = cheb
         self.activation = []
         self.encoder_build()
         self.decoder_build()
 
     def encoder_build(self):
-        """ Graph Convolutional Layers """
-        self.activation.append(self.input)
-        for i in range(len(self.gc_dim)):
-            in_d = self.input_dim if i == 0 else self.gc_dim[i-1]
-            out_d = self.gc_dim[i]
-            gc_layer = GraphConvolution(input_dim=in_d,
-                                        output_dim=out_d,
-                                        placeholders=self.placeholders,
-                                        act=tf.nn.relu,
-                                        dropout=True,
-                                        sparse_inputs=True,
-                                        logging=self.logging)
-            hidden = gc_layer(self.activation[-1])
-            self.activation.append(hidden)
-        last_dim = self.point_num * self.gc_dim[-1]
-        hidden = tf.reshape(self.activation[-1], [-1, last_dim])
-        self.activation.append(hidden)
-
-        """ Fully Connected Layers """
-        for i in range(len(self.fc_dim)):
-            out_d = self.fc_dim[i]
-            act_fun = None if i == len(self.fc_dim) - 1 else tf.nn.relu
-            hidden = set_full(self.activation[-1], out_d, 'full_' + str(i), act_fun)
+        with tf.variable_scope('Encoder'):
+            """ Graph Convolutional Layers """
+            self.activation.append(self.input)
+            for i in range(len(self.gc_dim)):
+                in_d = self.input_dim if i == 0 else self.gc_dim[i-1]
+                out_d = self.gc_dim[i]
+                gc_layer = GraphConvolution(input_dim=in_d,
+                                            output_dim=out_d,
+                                            name='GC_' + str(i),
+                                            act=tf.nn.relu,
+                                            dropout=True,
+                                            sparse=self.sparse,
+                                            logging=self.logging)
+                hidden = gc_layer(self.activation[-1], self.cheb)
+                self.activation.append(hidden)
+            last_dim = self.point_num * self.gc_dim[-1]
+            hidden = tf.reshape(self.activation[-1], [-1, last_dim])
             self.activation.append(hidden)
 
-        self.latent = self.activation[-1]
+            """ Fully Connected Layers """
+            for i in range(len(self.fc_dim)):
+                out_d = self.fc_dim[i]
+                act_fun = None if i == len(self.fc_dim) - 1 else tf.nn.relu
+                hidden = set_full(self.activation[-1], out_d, 'full_' + str(i), act_fun)
+                self.activation.append(hidden)
+
+            self.latent = self.activation[-1]
 
     def decoder_build(self):
-        """ Fully Connected Layers """
-        for i in list(range(len(self.fc_dim)-1))[::-1]:
-            out_d = self.fc_dim[i]
-            hidden = set_full(self.activation[-1], out_d, 'de_full_' + str(i), tf.nn.relu)
+        with tf.variable_scope('Decoder'):
+            """ Fully Connected Layers """
+            for i in list(range(len(self.fc_dim)-1))[::-1]:
+                out_d = self.fc_dim[i]
+                hidden = set_full(self.activation[-1], out_d, 'de_full_' + str(i), tf.nn.relu)
+                self.activation.append(hidden)
+            last_dim = self.point_num * self.gc_dim[-1]
+            hidden = set_full(self.activation[-1], last_dim, 'de_full_' + str(0), tf.nn.relu)
             self.activation.append(hidden)
-        last_dim = self.point_num * self.gc_dim[-1]
-        hidden = set_full(self.activation[-1], last_dim, 'de_full_' + str(0), tf.nn.relu)
-        self.activation.append(hidden)
 
-        """ Graph Convolutional Layers """
-        hidden = tf.reshape(self.activation[-1], [-1, self.point_num, self.gc_dim[-1]])
-        self.activation.append(hidden)
-        for i in list(range(len(self.gc_dim)))[::-1]:
-            in_d = self.gc_dim[i]
-            out_d = self.input_dim if i == 0 else self.gc_dim[i-1]
-            gc_layer = GraphConvolution(input_dim=in_d,
-                                        output_dim=out_d,
-                                        placeholders=self.placeholders,
-                                        act=tf.nn.relu,
-                                        dropout=True,
-                                        sparse_inputs=True,
-                                        logging=self.logging)
-            hidden = gc_layer(self.activation[-1])
+            """ Graph Convolutional Layers """
+            hidden = tf.reshape(self.activation[-1], [-1, self.point_num, self.gc_dim[-1]])
             self.activation.append(hidden)
-        self.output = self.activation[-1]
+            for i in list(range(len(self.gc_dim)))[::-1]:
+                in_d = self.gc_dim[i]
+                out_d = (self.output_dim if self.output_dim else self.input_dim) if i == 0 else self.gc_dim[i-1]
+                gc_layer = GraphConvolution(input_dim=in_d,
+                                            output_dim=out_d,
+                                            name='GC_' + str(i),
+                                            act=tf.nn.relu,
+                                            dropout=True,
+                                            logging=self.logging)
+                hidden = gc_layer(self.activation[-1], self.cheb)
+                self.activation.append(hidden)
+            self.output = self.activation[-1]
 
 
 def set_full(X, out_dim, scope=None, activate=tf.nn.relu, bn=False):

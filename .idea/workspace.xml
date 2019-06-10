@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3328ec80-346f-4c1e-97ed-329edb47d1d6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Model/VAE.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/MeshGAN.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MeshGAN.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Model/Old_layers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/RIMD_conv/GetFeature.m" beforeDir="false" afterPath="$PROJECT_DIR$/Data/RIMD_conv/GetFeature.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/Layers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Layers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Model/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Networks.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/VAE.py" beforeDir="false" afterPath="$PROJECT_DIR$/Model/VAE.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,22 +34,24 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="2155" />
+          <entry key="dummy" value="16" />
+          <entry key="py" value="3825" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="2155" />
+          <entry key="PLAIN_TEXT" value="16" />
+          <entry key="Python" value="3825" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="2" />
+          <entry key="py" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="2" />
+          <entry key="Python" value="5" />
         </counts>
       </usages-collector>
     </session>
@@ -58,31 +60,11 @@
     <splitter split-orientation="horizontal" split-proportion="0.43967828">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/Model/Layers.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-1400">
-                  <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/Model/Networks.py">
+            <entry file="file://$PROJECT_DIR$/Model/Old_layers.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1010">
-                  <caret line="138" column="40" lean-forward="true" selection-start-line="138" selection-start-column="40" selection-end-line="138" selection-end-column="40" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/Model/VAE.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-75">
-                  <folding>
-                    <element signature="e#0#26#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="224">
+                  <caret line="57" column="44" selection-start-line="57" selection-start-column="44" selection-end-line="57" selection-end-column="44" />
                 </state>
               </provider>
             </entry>
@@ -90,8 +72,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Model/inits.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="325">
-                  <caret line="14" column="42" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
+                <state relative-caret-position="500">
+                  <caret line="20" column="42" selection-start-line="20" selection-start-column="42" selection-end-line="20" selection-end-column="42" />
                   <folding>
                     <element signature="e#0#23#0" expanded="true" />
                   </folding>
@@ -102,11 +84,20 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Model/utils.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-695">
-                  <caret line="25" column="17" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="17" />
+                <state relative-caret-position="2255">
+                  <caret line="123" selection-start-line="123" selection-end-line="124" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/Model/Layers.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="250">
+                  <caret line="10" column="22" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
                 </state>
               </provider>
             </entry>
@@ -118,12 +109,12 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Model/VAE.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="550">
-                  <caret line="25" column="41" lean-forward="true" selection-start-line="25" selection-start-column="41" selection-end-line="25" selection-end-column="41" />
+                <state relative-caret-position="450">
+                  <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
                   <folding>
                     <element signature="e#0#26#0" expanded="true" />
-                    <marker date="1559555222140" expanded="true" signature="123:892" ph="..." />
-                    <marker date="1559555222140" expanded="true" signature="910:2811" ph="..." />
+                    <marker date="1560175179307" expanded="true" signature="123:1835" ph="..." />
+                    <marker date="1560175179307" expanded="true" signature="1853:3961" ph="..." />
                   </folding>
                 </state>
               </provider>
@@ -147,6 +138,7 @@
       <find>tf.get</find>
       <find>sparse_dropout</find>
       <find>placeholders</find>
+      <find>glorot</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -163,8 +155,9 @@
         <option value="$PROJECT_DIR$/Model/GraphConv.py" />
         <option value="$PROJECT_DIR$/Model/__init__.py" />
         <option value="$PROJECT_DIR$/Model/Networks.py" />
-        <option value="$PROJECT_DIR$/Model/utils.py" />
         <option value="$PROJECT_DIR$/Model/Layers.py" />
+        <option value="$PROJECT_DIR$/Model/utils.py" />
+        <option value="$PROJECT_DIR$/Model/layers_new.py" />
         <option value="$PROJECT_DIR$/Model/VAE.py" />
       </list>
     </option>
@@ -224,7 +217,7 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="Layers" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+    <configuration name="Old_layers" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="MeshGAN" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -237,7 +230,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Model/Layers.py" />
+      <option name="SCRIPT_NAME" value="D:\CS\AAAI2020\MeshGAN\Model\Old_layers.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -312,46 +305,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Model/inits.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="14" column="42" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Model/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-695">
-          <caret line="25" column="17" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="17" />
+        <state relative-caret-position="2255">
+          <caret line="123" selection-start-line="123" selection-end-line="124" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Model/VAE.py">
+    <entry file="file://$PROJECT_DIR$/Model/Networks.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-75">
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="3450">
+          <caret line="138" column="40" selection-start-line="138" selection-start-column="40" selection-end-line="138" selection-end-column="40" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Model/Networks.py">
+    <entry file="file://$PROJECT_DIR$/Model/Old_layers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1010">
-          <caret line="138" column="40" lean-forward="true" selection-start-line="138" selection-start-column="40" selection-end-line="138" selection-end-column="40" />
+        <state relative-caret-position="224">
+          <caret line="57" column="44" selection-start-line="57" selection-start-column="44" selection-end-line="57" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model/inits.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="500">
+          <caret line="20" column="42" selection-start-line="20" selection-start-column="42" selection-end-line="20" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Model/Layers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1400">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        <state relative-caret-position="250">
+          <caret line="10" column="22" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model/VAE.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+            <marker date="1560175179307" expanded="true" signature="123:1835" ph="..." />
+            <marker date="1560175179307" expanded="true" signature="1853:3961" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
