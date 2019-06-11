@@ -38,8 +38,9 @@ class GraphConvolution:
         # convolve
         supports = list()
         for i in range(len(cheb)):
-            pre_sup = dot(x, self.vars['weights_' + str(i)], self.sparse)
-            support = dot(cheb[i], pre_sup, self.sparse)
+            pre_sup = tf.tensordot(x, self.vars['weights_' + str(i)], [[2], [0]])
+            support = tf.tensordot(cheb[i], pre_sup, [[1], [1]])
+            support = tf.transpose(support, [1, 0, 2])
             supports.append(support)
         output = tf.add_n(supports)
 

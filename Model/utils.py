@@ -26,9 +26,9 @@ def sparse_to_tuple(sparse_mx):
 def tuple_to_dense(sparse):
     """Convert Sparse Tuple to Dense Matrix"""
     def to_dense(sparse):
-        dense = np.zeros(sparse[2])
+        dense = np.zeros(sparse[2], dtype=np.float32)
         for i in range(len(sparse[0])):
-            dense[sparse[0][i][0]][sparse[0][i][1]] = sparse[1][i]
+            dense[sparse[0][i][0]][sparse[0][i][1]] = float(sparse[1][i])
         return dense
 
     if isinstance(sparse, list):
