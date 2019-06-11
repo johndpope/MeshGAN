@@ -78,5 +78,5 @@ def dot(x, y, sparse=False):
     if sparse:
         res = tf.sparse_tensor_dense_matmul(x, y)
     else:
-        res = tf.matmul(x, y)
+        res = tf.tensordot(x, y, axes=[[2], [0]])
     return res

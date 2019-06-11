@@ -23,6 +23,23 @@ def sparse_to_tuple(sparse_mx):
     return sparse_mx
 
 
+def tuple_to_dense(sparse):
+    """Convert Sparse Tuple to Dense Matrix"""
+    def to_dense(sparse):
+        dense = np.zeros(sparse[2])
+        for i in range(len(sparse[0])):
+            dense[sparse[0][i][0]][sparse[0][i][1]] = sparse[1][i]
+        return dense
+
+    if isinstance(sparse, list):
+        for i in range(len(sparse)):
+            sparse[i] = to_dense(sparse[i])
+    else:
+        sparse = to_dense(sparse)
+
+    return sparse
+
+
 def normalize_adj(adj):
     """Symmetrically normalize adjacency matrix."""
     adj = sp.coo_matrix(adj)

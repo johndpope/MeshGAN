@@ -34,9 +34,10 @@ class MeshAE:
         """Get Chebyshev Sequence"""
         self.cheb_e = chebyshev_polynomials(self.e_adj, self.max_degree)
         self.cheb_p = chebyshev_polynomials(self.p_adj, self.max_degree)
+
         if not self.sparse:
-            self.cheb_e = tf.sparse.to_dense(self.cheb_e)
-            self.cheb_p = tf.sparse.to_dense(self.cheb_p)
+            self.cheb_e = tuple_to_dense(self.cheb_e)
+            self.cheb_p = tuple_to_dense(self.cheb_p)
 
         """Logdr AutoEncoder"""
         self.ae_logdr = AutoEncoder(self.placeholder_logdr, self.gc_dim, self.fc_dim, self.cheb_e, self.sparse)
@@ -83,7 +84,7 @@ class AutoEncoder:
                                             output_dim=out_d,
                                             name='GC_' + str(i),
                                             act=tf.nn.relu,
-                                            dropout=True,
+                                            dropout=0.,
                                             sparse=self.sparse,
                                             logging=self.logging)
                 hidden = gc_layer(self.activation[-1], self.cheb)
