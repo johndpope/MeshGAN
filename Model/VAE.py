@@ -16,6 +16,11 @@ class MeshAE:
         self.max_degree = max_degree
         self.sparse = sparse
 
+        """Get Adjacency Matrix"""
+        data = h5py.File(matpath)
+        self.p_adj = np.transpose(data['p_adj'])
+        self.e_adj = np.transpose(data['e_adj'])
+
         """Make Placholder for RIMD"""
         logdr_shape = np.shape(self.logdr)
         self.placeholder_logdr = tf.placeholder(tf.float32, [None, logdr_shape[1], logdr_shape[2]])
@@ -25,10 +30,10 @@ class MeshAE:
 
         """Make Placeholder for Input"""
         self.input = tf.placeholder(tf.float32, [None, logdr_shape[1], 3])
-        
+
         """Get Chebyshev Sequence"""
-        self.cheb_e = chebyshev_polynomials(self.e_neighbour, self.max_degree)
-        self.cheb_p = chebyshev_polynomials(self.p_neighbour, self.max_degree)
+        self.cheb_e = chebyshev_polynomials(self.e_adj, self.max_degree)
+        self.cheb_p = chebyshev_polynomials(self.p_adj, self.max_degree)
         if not self.sparse:
             self.cheb_e = tf.sparse.to_dense(self.cheb_e)
             self.cheb_p = tf.sparse.to_dense(self.cheb_p)

@@ -63,5 +63,7 @@ function m=get_tog16_feature(objfolder,matpath)
     e_neighbour(:,1)=[];
     m.e_neighbour=e_neighbour;
     m.p_neighbour=p_neighbour;
+    m.e_adj = neighbour2adj(m.e_neighbour);
+    m.p_adj = neighbour2adj(m.p_neighbour);
     %m.Smtx=S_mtx;
 end
