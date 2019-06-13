@@ -6,11 +6,11 @@ import h5py
 
 
 class MeshAE:
-    def __init__(self, matpath, gc_dim, fc_dim, max_degree=2, sparse=False, padding=False, result_max1=0.9, result_min1=-0.9):
+    def __init__(self, matpath, gc_dim, fc_dim, max_degree=2, sparse=False, result_max=0.9, result_min=-0.9):
         self.logdr, self.s, self.e_neighbour, self.p_neighbour,\
             self.degree, self.logdr_min, self.logdr_max, self.ds_min,\
             self.ds_max, self.modelnum, self.pointnum, self.edgenum, self._old_maxdegree\
-            = load_data(matpath, logdr_ismap=True, s_ismap=False)
+            = load_data(matpath, result_min=result_min, result_max=result_max, logdr_ismap=True, s_ismap=False)
         self.gc_dim = gc_dim
         self.fc_dim = fc_dim
         self.max_degree = max_degree
@@ -40,7 +40,7 @@ class MeshAE:
             self.cheb_p = tuple_to_dense(self.cheb_p)
 
         """Logdr AutoEncoder"""
-        self.ae_logdr = AutoEncoder(self.placeholder_logdr, self.gc_dim, self.fc_dim, self.cheb_e, self.sparse, 'AE_logdr')
+        self.ae_logdr = AutoEncoder(self.placeholder_logdr, self.gc_dim, self.fc_dim, self.cheb_e, self.sparse, 'AE_logdr', output_dim=9)
 
         """S AutoEncoder"""
         self.ae_s = AutoEncoder(self.placeholder_s, self.gc_dim, self.fc_dim, self.cheb_p, self.sparse, 'AE_s')
@@ -219,3 +219,10 @@ def load_data(path, result_max=0.9, result_min=-0.9, logdr_ismap=False, s_ismap=
 
     return logdrnew, snew, e_nb, p_nb, degree, logdrmin, logdrmax, smin, smax, modelnum, pointnum, edgenum, maxdegree
 
+
+def recover_data(x, x_min, x_max, result_min=-0.9, result_max=0.9):
+    x = np.array(x)
+
+    x = (x_max - x_min) * (x - result_min) / (result_max - result_min) + x_min
+
+    return x
