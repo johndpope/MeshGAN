@@ -34,9 +34,9 @@ def tuple_to_dense(sparse):
 
     if isinstance(sparse, list):
         for i in range(len(sparse)):
-            sparse[i] = tf.constant(to_dense(sparse[i]))
+            sparse[i] = to_dense(sparse[i])
     else:
-        sparse = tf.constant(to_dense(sparse))
+        sparse = to_dense(sparse)
 
     return sparse
 

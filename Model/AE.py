@@ -34,20 +34,24 @@ class MeshAE:
         """Get Chebyshev Sequence"""
         self.cheb_e = chebyshev_polynomials(self.e_adj, self.max_degree)
         self.cheb_p = chebyshev_polynomials(self.p_adj, self.max_degree)
+        self.cheb_e_p = tf.sparse_placeholder(tf.float32)
+        self.cheb_p_o = tf.sparse_placeholder(tf.float32)
 
         if not self.sparse:
             self.cheb_e = tuple_to_dense(self.cheb_e)
             self.cheb_p = tuple_to_dense(self.cheb_p)
+            self.cheb_e_p = tf.placeholder(tf.float32, shape=np.shape(self.cheb_e))
+            self.cheb_p_p = tf.placeholder(tf.float32, shape=np.shape(self.cheb_p))
 
         """Mesh Encoder"""
-        self.encoder = Encoder(self.input, self.gc_dim, self.fc_dim, self.cheb_e, self.sparse, 'Encoder')
+        self.encoder = Encoder(self.input, self.gc_dim, self.fc_dim, self.cheb_e_p, self.sparse, 'Encoder')
         self.latent = self.encoder.latent
 
         """Logdr AutoEncoder"""
-        self.decoder_logdr = Decoder(self.latent, 9, self.edgenum, self.gc_dim, self.fc_dim, self.cheb_e, self.sparse, 'Decoder_logdr')
+        self.decoder_logdr = Decoder(self.latent, 9, self.edgenum, self.gc_dim, self.fc_dim, self.cheb_e_p, self.sparse, 'Decoder_logdr')
 
         """S AutoEncoder"""
-        self.decoder_s = Decoder(self.latent, 9, self.pointnum, self.gc_dim, self.fc_dim, self.cheb_p, self.sparse, 'Decoder_s')
+        self.decoder_s = Decoder(self.latent, 9, self.pointnum, self.gc_dim, self.fc_dim, self.cheb_p_p, self.sparse, 'Decoder_s')
 
         """Output"""
         self.output_logdr = self.decoder_logdr.output
