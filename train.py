@@ -1,4 +1,4 @@
-from Model.VAE import *
+from Model.AE import *
 
 matpath = 'D:\\CS\\AAAI2020\\MeshGAN\\Data\\Dyna\\mesh\\50002_chicken_wings\\new\\fake_tog.mat'
 gc_dim = [5, 6]

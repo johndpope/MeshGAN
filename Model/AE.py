@@ -21,7 +21,7 @@ class MeshAE:
         self.p_adj = np.transpose(data['p_adj'])
         self.e_adj = np.transpose(data['e_adj'])
 
-        """Make Placholder for RIMD"""
+        """Make Placholder for RIMD Label"""
         logdr_shape = np.shape(self.logdr)
         self.placeholder_logdr = tf.placeholder(tf.float32, [None, logdr_shape[1], logdr_shape[2]])
 
@@ -39,26 +39,29 @@ class MeshAE:
             self.cheb_e = tuple_to_dense(self.cheb_e)
             self.cheb_p = tuple_to_dense(self.cheb_p)
 
+        """Mesh Encoder"""
+        self.encoder = Encoder(self.input, self.gc_dim, self.fc_dim, self.cheb_e, self.sparse, 'Encoder')
+        self.latent = self.encoder.latent
+
         """Logdr AutoEncoder"""
-        self.ae_logdr = AutoEncoder(self.placeholder_logdr, self.gc_dim, self.fc_dim, self.cheb_e, self.sparse, 'AE_logdr', output_dim=9)
+        self.decoder_logdr = Decoder(self.latent, 9, self.edgenum, self.gc_dim, self.fc_dim, self.cheb_e, self.sparse, 'Decoder_logdr')
 
         """S AutoEncoder"""
-        self.ae_s = AutoEncoder(self.placeholder_s, self.gc_dim, self.fc_dim, self.cheb_p, self.sparse, 'AE_s')
+        self.decoder_s = Decoder(self.latent, 9, self.pointnum, self.gc_dim, self.fc_dim, self.cheb_p, self.sparse, 'Decoder_s')
 
         """Output"""
-        self.output_logdr = self.ae_logdr.output
-        self.output_s = self.ae_s.output
+        self.output_logdr = self.decoder_logdr.output
+        self.output_s = self.decoder_s.output
 
 
-class AutoEncoder:
-    def __init__(self, input, gc_dim, fc_dim, cheb, sparse=False, name='AE', lr=1e-3, output_dim=None):
+class Encoder:
+    def __init__(self, input, gc_dim, fc_dim, cheb, sparse=False, name='AE', lr=1e-3):
         """Get Input and its dimension"""
         with tf.variable_scope(name):
             self.name = name
             self.input = input
             input_dim = input.get_shape().as_list()
             self.input_dim = input_dim[-1]
-            self.output_dim = output_dim
             self.point_num = input_dim[-2]
             self.batch_size = input_dim[0]
             self.gc_dim = gc_dim
@@ -72,11 +75,10 @@ class AutoEncoder:
             self.output = None
             self.cheb = cheb
             self.activation = []
-            self.encoder_build()
-            self.decoder_build()
+            self._build()
             self.print_layers()
 
-    def encoder_build(self):
+    def _build(self):
         with tf.variable_scope('Encoder'):
             """ Graph Convolutional Layers """
             self.activation.append(self.input)
@@ -105,9 +107,38 @@ class AutoEncoder:
 
             self.latent = self.activation[-1]
 
-    def decoder_build(self):
+    def print_layers(self):
+        print(self.name)
+        for i in range(len(self.activation)):
+            print(self.activation[i])
+
+
+class Decoder:
+    def __init__(self, input, output_dim, point_num, gc_dim, fc_dim, cheb, sparse=False, name='AE', lr=1e-3):
+        """Get Input and its dimension"""
+        with tf.variable_scope(name):
+            self.name = name
+            self.input = input
+            self.output_dim = output_dim
+            self.point_num = point_num
+            self.gc_dim = gc_dim
+            self.fc_dim = fc_dim
+            """Get Other Members"""
+            self.sparse = sparse
+            self.optimizer = tf.train.AdamOptimizer(learning_rate=lr)
+            self.logging = True
+            """Build the Network"""
+            self.latent = None
+            self.output = None
+            self.cheb = cheb
+            self.activation = []
+            self._build()
+            self.print_layers()
+
+    def _build(self):
         with tf.variable_scope('Decoder'):
             """ Fully Connected Layers """
+            self.activation.append(self.input)
             for i in list(range(1, len(self.fc_dim)))[::-1]:
                 out_d = self.fc_dim[i-1]
                 hidden = set_full(self.activation[-1], out_d, 'de_full_' + str(i), tf.nn.relu)
@@ -121,7 +152,7 @@ class AutoEncoder:
             self.activation.append(hidden)
             for i in list(range(len(self.gc_dim)))[::-1]:
                 in_d = self.gc_dim[i]
-                out_d = (self.output_dim if self.output_dim else self.input_dim) if i == 0 else self.gc_dim[i-1]
+                out_d = self.output_dim if i == 0 else self.gc_dim[i-1]
                 gc_layer = GraphConvolution(input_dim=in_d,
                                             output_dim=out_d,
                                             name='GC_' + str(i),

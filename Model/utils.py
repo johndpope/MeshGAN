@@ -1,3 +1,4 @@
+import tensorflow as tf
 import numpy as np
 import scipy.sparse as sp
 import h5py
@@ -33,9 +34,9 @@ def tuple_to_dense(sparse):
 
     if isinstance(sparse, list):
         for i in range(len(sparse)):
-            sparse[i] = to_dense(sparse[i])
+            sparse[i] = tf.constant(to_dense(sparse[i]))
     else:
-        sparse = to_dense(sparse)
+        sparse = tf.constant(to_dense(sparse))
 
     return sparse
 
