@@ -12,4 +12,4 @@ continuous_training = False
 
 model = MeshAE(matpath, gc_dim, fc_dim, max_degree)
 
-model.train(epoch, batchsize, lr, continuous_training)
+model.use()

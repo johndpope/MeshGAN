@@ -67,6 +67,7 @@ class MeshAE:
 
             total_step = []
             total_loss = []
+            temp_loss = []
             for i in range(epoch):
                 batch_index = np.random.randint(0, np.shape(self.acap)[0], [batchsize], np.int)
                 input_data = self.vertex[batch_index]
@@ -74,44 +75,42 @@ class MeshAE:
                 loss, _ = sess.run([self.loss, optimizer], feed_dict={self.input: input_data, self.cheb_p: self.cheb, self.output_gt: output_gt})
                 loss = loss / batchsize
                 print('Epoch: %03d/%03d| Loss: %05f' %(i, epoch, loss))
-
+                temp_loss.append(loss)
                 if i > 0 and i % 100 == 0:
                     total_step.append(i)
-                    total_loss.append(loss)
+                    total_loss.append(np.average(temp_loss))
+                    temp_loss = []
                     name = str(i%100)
                     plot_info(total_loss, total_step, name)
 
                     self.saver.save(sess, self.save_folder, i)
 
-    def train(self, epoch=2000, batchsize=10, lr=1e-3, continue_train=False):
-        optimizer = tf.train.AdamOptimizer(lr).minimize(self.loss)
-
+    def use(self):
         config = tf.ConfigProto()
         config.gpu_options.allow_growth = True
 
         with tf.Session(config=config) as sess:
             sess.run(tf.global_variables_initializer())
-            if continue_train:
-                latest = tf.train.latest_checkpoint(self.save_folder)
-                self.saver.restore(sess, latest)
+            latest = tf.train.latest_checkpoint(self.save_folder)
+            self.saver.restore(sess, latest)
 
-            total_step = []
-            total_loss = []
-            for i in range(epoch):
-                batch_index = np.random.randint(0, np.shape(self.acap)[0], [batchsize], np.int)
-                input_data = self.vertex[batch_index]
-                output_gt = self.acap[batch_index]
-                loss, _ = sess.run([self.loss, optimizer], feed_dict={self.input: input_data, self.cheb_p: self.cheb, self.output_gt: output_gt})
-                loss = loss / batchsize
-                print('Epoch: %03d/%03d| Loss: %05f' %(i, epoch, loss))
+            total_output = []
+            total_gt = []
+            for i in range(len(self.vertex)):
+                input_data = [self.vertex[i]]
+                output = sess.run(self.output, feed_dict={self.input: input_data, self.cheb_p: self.cheb})
+                total_output.append(output)
+                total_gt.append(self.acap[i])
 
-                if i > 0 and i % 100 == 0:
-                    total_step.append(i)
-                    total_loss.append(loss)
-                    name = str(i%100)
-                    plot_info(total_loss, total_step, name)
+            name = './result.h5'
+            print(name)
+            f = h5py.File(name, 'w')
+            total_gt = np.squeeze(total_gt)
+            total_output = np.squeeze(total_output)
+            f['test_mesh'] = total_output
+            f['gt_mesh'] = total_gt
+            f.close()
 
-                    self.saver.save(sess, self.save_folder, i)
 
 
 class Encoder:
