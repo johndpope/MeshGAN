@@ -1,8 +1,11 @@
-import tensorflow as tf
 import numpy as np
 import scipy.sparse as sp
 import h5py
 from scipy.sparse.linalg.eigen.arpack import eigsh
+import matplotlib as mpl
+mpl.use('Agg')
+import matplotlib.pyplot as plt
+import os
 
 
 def sparse_to_tuple(sparse_mx):
@@ -140,3 +143,14 @@ def load_data(path, result_max=0.9, result_min=-0.9, logdr_ismap=False, s_ismap=
         smax = 0
     return logdrnew, snew, e_nb, p_nb, degree, logdrmin, logdrmax, smin, smax, modelnum, pointnum, edgenum, maxdegree
 
+
+def plot_info(loss, step, name='', path='./visual/'):
+    plt.close('all')
+    plt.plot(step, loss, "b.-")
+    plt.title("Loss")
+    plt.xlabel("Step")
+    plt.ylabel("Loss")
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+    plt.savefig(path + "/train_info"+name+".png")

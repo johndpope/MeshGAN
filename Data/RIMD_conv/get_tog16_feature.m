@@ -46,7 +46,7 @@ function m=get_tog16_feature(objfolder,matpath)
     m.s=fms;
     [v,~,~,~,~,vv,~,~,~,b_E,e2v] = cotlp([objfolder,'\new\',objlist(1).name]);
     p_neighbour=zeros(size(v,1),100);
-    maxnum=0;n
+    maxnum=0;
     for i=1:size(vv,1)
         p_neighbour(i,1:size(vv{i,:},2))=vv{i,:};
         if size(vv{i,:},2)>maxnum

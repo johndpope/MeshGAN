@@ -16,7 +16,7 @@ class GraphConvolution:
         self.vars = {}
 
         with tf.variable_scope(self.name + '_vars'):
-            for i in range(max_degree):
+            for i in range(max_degree+1):
                 self.vars['weights_' + str(i)] = glorot([input_dim, output_dim],
                                                         name='weights_' + str(i))
             if self.bias:

@@ -3,59 +3,115 @@ from Model.utils import *
 import tensorflow as tf
 import numpy as np
 import h5py
+import os
 
 
 class MeshAE:
     def __init__(self, matpath, gc_dim, fc_dim, max_degree=2, sparse=False, result_max=0.9, result_min=-0.9):
-        self.logdr, self.s, self.e_neighbour, self.p_neighbour,\
-            self.degree, self.logdr_min, self.logdr_max, self.ds_min,\
-            self.ds_max, self.modelnum, self.pointnum, self.edgenum, self._old_maxdegree\
-            = load_data(matpath, result_min=result_min, result_max=result_max, logdr_ismap=True, s_ismap=False)
+        # self.logdr, self.s, self.e_neighbour, self.p_neighbour,\
+        #     self.degree, self.logdr_min, self.logdr_max, self.ds_min,\
+        #     self.ds_max, self.modelnum, self.pointnum, self.edgenum, self._old_maxdegree\
+        #     = load_data(matpath, result_min=result_min, result_max=result_max, logdr_ismap=True, s_ismap=False)
+        self.vertex, self.acap, self.pointnum, self.p_adj = load_acap(matpath, result_min=result_min, result_max=result_max,ismap=False)
+
         self.gc_dim = gc_dim
         self.fc_dim = fc_dim
         self.max_degree = max_degree
         self.sparse = sparse
 
-        """Get Adjacency Matrix"""
-        data = h5py.File(matpath)
-        self.p_adj = np.transpose(data['p_adj'])
-        self.e_adj = np.transpose(data['e_adj'])
 
-        """Make Placholder for RIMD Label"""
-        logdr_shape = np.shape(self.logdr)
-        self.placeholder_logdr = tf.placeholder(tf.float32, [None, logdr_shape[1], logdr_shape[2]])
-
-        s_shape = np.shape(self.s)
-        self.placeholder_s = tf.placeholder(tf.float32, [None, s_shape[1], s_shape[2]])
+        """Make Placholder for ACAP Label"""
+        acap_shape = np.shape(self.acap)
+        self.placeholder_acap = tf.placeholder(tf.float32, [None, acap_shape[1], acap_shape[2]])
 
         """Make Placeholder for Input"""
-        self.input = tf.placeholder(tf.float32, [None, logdr_shape[1], 3])
+        self.input = tf.placeholder(tf.float32, [None, acap_shape[1], 3])
+        self.output_gt = tf.placeholder(tf.float32, [None, acap_shape[1], acap_shape[2]])
 
         """Get Chebyshev Sequence"""
-        self.cheb_e = chebyshev_polynomials(self.e_adj, self.max_degree)
-        self.cheb_p = chebyshev_polynomials(self.p_adj, self.max_degree)
-        self.cheb_e_p = tf.sparse_placeholder(tf.float32)
-        self.cheb_p_o = tf.sparse_placeholder(tf.float32)
+        self.cheb = chebyshev_polynomials(self.p_adj, self.max_degree)
+        self.cheb_p = tf.sparse_placeholder(tf.float32)
 
         if not self.sparse:
-            self.cheb_e = tuple_to_dense(self.cheb_e)
-            self.cheb_p = tuple_to_dense(self.cheb_p)
-            self.cheb_e_p = tf.placeholder(tf.float32, shape=np.shape(self.cheb_e))
-            self.cheb_p_p = tf.placeholder(tf.float32, shape=np.shape(self.cheb_p))
+            self.cheb = tuple_to_dense(self.cheb)
+            self.cheb_p = tf.placeholder(tf.float32, shape=np.shape(self.cheb))
 
         """Mesh Encoder"""
-        self.encoder = Encoder(self.input, self.gc_dim, self.fc_dim, self.cheb_e_p, self.sparse, 'Encoder')
+        self.encoder = Encoder(self.input, self.gc_dim, self.fc_dim, self.cheb_p, self.sparse, 'Encoder')
         self.latent = self.encoder.latent
 
-        """Logdr AutoEncoder"""
-        self.decoder_logdr = Decoder(self.latent, 9, self.edgenum, self.gc_dim, self.fc_dim, self.cheb_e_p, self.sparse, 'Decoder_logdr')
-
-        """S AutoEncoder"""
-        self.decoder_s = Decoder(self.latent, 9, self.pointnum, self.gc_dim, self.fc_dim, self.cheb_p_p, self.sparse, 'Decoder_s')
+        """ACAP Decoder"""
+        self.decoder = Decoder(self.latent, acap_shape[-1], self.pointnum, self.gc_dim, self.fc_dim, self.cheb_p, self.sparse,
+                               'Decoder')
 
         """Output"""
-        self.output_logdr = self.decoder_logdr.output
-        self.output_s = self.decoder_s.output
+        self.output = self.decoder.output
+        self.loss = tf.nn.l2_loss(tf.subtract(self.output_gt, self.output))
+
+        self.save_folder = './Param/'
+        if not os.path.exists(self.save_folder):
+            os.makedirs(self.save_folder)
+        self.saver = tf.train.Saver(max_to_keep=2)
+
+    def train(self, epoch=2000, batchsize=10, lr=1e-3, continue_train=False):
+        optimizer = tf.train.AdamOptimizer(lr).minimize(self.loss)
+
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+
+        with tf.Session(config=config) as sess:
+            sess.run(tf.global_variables_initializer())
+            if continue_train:
+                latest = tf.train.latest_checkpoint(self.save_folder)
+                self.saver.restore(sess, latest)
+
+            total_step = []
+            total_loss = []
+            for i in range(epoch):
+                batch_index = np.random.randint(0, np.shape(self.acap)[0], [batchsize], np.int)
+                input_data = self.vertex[batch_index]
+                output_gt = self.acap[batch_index]
+                loss, _ = sess.run([self.loss, optimizer], feed_dict={self.input: input_data, self.cheb_p: self.cheb, self.output_gt: output_gt})
+                loss = loss / batchsize
+                print('Epoch: %03d/%03d| Loss: %05f' %(i, epoch, loss))
+
+                if i > 0 and i % 100 == 0:
+                    total_step.append(i)
+                    total_loss.append(loss)
+                    name = str(i%100)
+                    plot_info(total_loss, total_step, name)
+
+                    self.saver.save(sess, self.save_folder, i)
+
+    def train(self, epoch=2000, batchsize=10, lr=1e-3, continue_train=False):
+        optimizer = tf.train.AdamOptimizer(lr).minimize(self.loss)
+
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+
+        with tf.Session(config=config) as sess:
+            sess.run(tf.global_variables_initializer())
+            if continue_train:
+                latest = tf.train.latest_checkpoint(self.save_folder)
+                self.saver.restore(sess, latest)
+
+            total_step = []
+            total_loss = []
+            for i in range(epoch):
+                batch_index = np.random.randint(0, np.shape(self.acap)[0], [batchsize], np.int)
+                input_data = self.vertex[batch_index]
+                output_gt = self.acap[batch_index]
+                loss, _ = sess.run([self.loss, optimizer], feed_dict={self.input: input_data, self.cheb_p: self.cheb, self.output_gt: output_gt})
+                loss = loss / batchsize
+                print('Epoch: %03d/%03d| Loss: %05f' %(i, epoch, loss))
+
+                if i > 0 and i % 100 == 0:
+                    total_step.append(i)
+                    total_loss.append(loss)
+                    name = str(i%100)
+                    plot_info(total_loss, total_step, name)
+
+                    self.saver.save(sess, self.save_folder, i)
 
 
 class Encoder:
@@ -208,6 +264,27 @@ def load_neighbour(neighbour, edges, is_padding=False):
         for i in range(0, edges):
             x[i] = data[:, i]
     return x
+
+
+def load_acap(path, result_max=0.9, result_min=-0.9, ismap=False):
+    data = h5py.File(path)
+    acap = data['acap']
+    p_adj = np.transpose(data['p_adj'])
+    vertex = np.transpose(data['vertex'])
+    pointnum = len(acap[0])
+
+    acap_x = acap
+    acap_x = np.transpose(acap_x, (2, 1, 0))
+
+    if ismap:
+        acapmin = acap_x.min() - 1e-6
+        acapmax = acap_x.max() + 1e-6
+        acapnew = (result_max - result_min) * (acap_x - acapmin) / (acapmax - acapmin) + result_min
+
+    else:
+        acapnew = acap_x
+
+    return vertex, acapnew, pointnum, p_adj
 
 
 def load_data(path, result_max=0.9, result_min=-0.9, logdr_ismap=False, s_ismap=False):
