@@ -4,6 +4,7 @@ import h5py
 from scipy.sparse.linalg.eigen.arpack import eigsh
 import matplotlib as mpl
 mpl.use('Agg')
+import scipy.io as sio
 import matplotlib.pyplot as plt
 import os
 
@@ -144,9 +145,30 @@ def load_data(path, result_max=0.9, result_min=-0.9, logdr_ismap=False, s_ismap=
     return logdrnew, snew, e_nb, p_nb, degree, logdrmin, logdrmax, smin, smax, modelnum, pointnum, edgenum, maxdegree
 
 
+def load_geodesic_weight(path='scapedistance.mat', name='distance'):
+    data = sio.loadmat(path)
+    data = data[name]
+    distance = data
+    return distance
+
+
 def plot_info(loss, step, name='', path='./visual/'):
     plt.close('all')
     plt.plot(step, loss, "b.-")
+    plt.title("Loss")
+    plt.xlabel("Step")
+    plt.ylabel("Loss")
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+    plt.savefig(path + "/train_info"+name+".png")
+
+
+def plot_multi_info(loss, recon, lapla, step, name='', path='./visual/'):
+    plt.close('all')
+    plt.plot(step, loss, "b.-", label='Total Loss')
+    plt.plot(step, recon, "r.-", label='Recon Loss')
+    plt.plot(step, lapla, "g.-", label='Lapla Loss')
     plt.title("Loss")
     plt.xlabel("Step")
     plt.ylabel("Loss")

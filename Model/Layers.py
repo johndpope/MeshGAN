@@ -5,11 +5,12 @@ class GraphConvolution:
     """Graph convolution layer."""
     def __init__(self, input_dim, output_dim, name='GC_Layer',
                  max_degree=2, dropout=0., act=tf.nn.relu,
-                 bias=False, logging=True, sparse=False):
+                 bias=False, bn=True, logging=True, sparse=False):
         self.name = name
         self.max_degree = max_degree
         self.act = act
         self.bias = bias
+        self.bn = bn
         self.logging = logging
         self.dropout = dropout
         self.sparse = sparse
@@ -48,7 +49,14 @@ class GraphConvolution:
         if self.bias:
             output += self.vars['bias']
 
-        return self.act(output)
+        # bn
+        if self.bn:
+            output = tf.contrib.layers.batch_norm(output, .9, epsilon=1e-5, activation_fn=None)
+
+        # activation
+        if self.act:
+            output = self.act(output)
+        return output
 
     def __call__(self, inputs, cheb):
         with tf.name_scope(self.name):

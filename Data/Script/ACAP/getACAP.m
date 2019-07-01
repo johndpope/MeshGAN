@@ -21,6 +21,7 @@ function getACAP( model_path )
         end
     end
     p_neighbour(:,maxnum+1:end)=[];
+    m.p_neighbour = p_neighbour;
     m.p_adj = neighbour2adj(p_neighbour);
     
     m.acap = cat(3, fmlogdr, fms);

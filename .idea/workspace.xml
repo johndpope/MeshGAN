@@ -2,11 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3328ec80-346f-4c1e-97ed-329edb47d1d6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/use.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/interpolation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/RIMD_conv/get_tog16_feature.asv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Script/ACAP/getACAP.m" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Script/ACAP/getACAP.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/AE.py" beforeDir="false" afterPath="$PROJECT_DIR$/Model/AE.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Layers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Layers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/inits.py" beforeDir="false" afterPath="$PROJECT_DIR$/Model/inits.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Model/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/use.py" beforeDir="false" afterPath="$PROJECT_DIR$/use.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,7 +19,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/MeshGAN$train.coverage" NAME="train Coverage Results" MODIFIED="1560493141960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MeshGAN$train.coverage" NAME="train Coverage Results" MODIFIED="1561956702969" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="112044962">
@@ -42,35 +46,49 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="16" />
-          <entry key="py" value="7615" />
+          <entry key="py" value="14054" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="16" />
-          <entry key="Python" value="7615" />
+          <entry key="Python" value="14054" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="11" />
+          <entry key="py" value="13" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="11" />
+          <entry key="Python" value="13" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.43305084">
+    <splitter split-orientation="horizontal" split-proportion="0.37288135">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/Model/AE.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="525">
+                  <caret line="177" selection-start-line="177" selection-end-line="177" />
+                  <folding>
+                    <element signature="e#0#26#0" expanded="true" />
+                    <marker date="1561966490046" expanded="true" signature="133:15785" ph="..." />
+                    <marker date="1561966490046" expanded="true" signature="15902:18219" ph="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Model/Old_layers.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="375">
+                <state relative-caret-position="-150">
                   <caret line="94" column="35" selection-start-line="94" selection-start-column="23" selection-end-line="94" selection-end-column="35" />
                 </state>
               </provider>
@@ -79,11 +97,11 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Model/utils.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="427">
-                  <caret line="152" selection-start-line="152" selection-end-line="152" />
+                <state relative-caret-position="374">
+                  <caret line="155" column="20" selection-start-line="155" selection-start-column="20" selection-end-line="155" selection-end-column="20" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
-                    <marker date="1561454542768" expanded="true" signature="814:823" ph="..." />
+                    <marker date="1561879743914" expanded="true" signature="837:846" ph="..." />
                   </folding>
                 </state>
               </provider>
@@ -92,8 +110,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Model/inits.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="50">
-                  <caret line="3" selection-start-line="3" selection-end-line="3" />
+                <state relative-caret-position="175">
+                  <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
                   <folding>
                     <element signature="e#0#23#0" expanded="true" />
                   </folding>
@@ -101,11 +119,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Model/Layers.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="350">
-                  <caret line="23" selection-start-line="23" selection-end-line="23" />
+                <state relative-caret-position="25">
+                  <caret line="18" column="30" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="30" />
                 </state>
               </provider>
             </entry>
@@ -117,12 +135,24 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Model/AE.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="4375">
-                  <caret line="268" column="25" selection-start-line="268" selection-start-column="21" selection-end-line="268" selection-end-column="25" />
+                <state relative-caret-position="349">
+                  <caret line="206" column="43" selection-start-line="206" selection-start-column="43" selection-end-line="206" selection-end-column="43" />
                   <folding>
                     <element signature="e#0#26#0" expanded="true" />
-                    <marker date="1561457204351" expanded="true" signature="133:9505" ph="..." />
+                    <marker date="1561966490046" expanded="true" signature="133:15785" ph="..." />
+                    <marker date="1561966490046" expanded="true" signature="7470:10264" ph="..." />
+                    <marker date="1561966490046" expanded="true" signature="15902:18219" ph="..." />
+                    <marker date="1561966490046" expanded="true" signature="16582:16965" ph="..." />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/interpolation.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="175">
+                  <caret line="7" column="5" selection-start-line="7" selection-start-column="5" selection-end-line="7" selection-end-column="5" />
                 </state>
               </provider>
             </entry>
@@ -130,8 +160,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/use.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="325">
-                  <caret line="13" selection-start-line="13" selection-end-line="13" />
+                <state relative-caret-position="150">
+                  <caret line="6" selection-start-line="6" selection-end-line="7" />
                 </state>
               </provider>
             </entry>
@@ -139,8 +169,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/train.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="300">
-                  <caret line="12" selection-start-line="12" selection-end-line="12" />
+                <state relative-caret-position="50">
+                  <caret line="2" column="49" selection-start-line="2" selection-start-column="49" selection-end-line="2" selection-end-column="49" />
                 </state>
               </provider>
             </entry>
@@ -165,7 +195,14 @@
       <find>placeholders</find>
       <find>glorot</find>
       <find>print</find>
+      <find>self.</find>
+      <find>variable_scope</find>
+      <find>uniform</find>
+      <find>tf.variable(</find>
     </findStrings>
+    <replaceStrings>
+      <replace />
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -174,7 +211,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Model/Layer.py" />
-        <option value="$PROJECT_DIR$/Model/inits.py" />
         <option value="$PROJECT_DIR$/Model/GCN.py" />
         <option value="$PROJECT_DIR$/Model/Descriminator.py" />
         <option value="$PROJECT_DIR$/Model/Generator.py" />
@@ -183,10 +219,12 @@
         <option value="$PROJECT_DIR$/Model/Networks.py" />
         <option value="$PROJECT_DIR$/Model/layers_new.py" />
         <option value="$PROJECT_DIR$/Model/VAE.py" />
-        <option value="$PROJECT_DIR$/Model/Layers.py" />
-        <option value="$PROJECT_DIR$/Model/utils.py" />
-        <option value="$PROJECT_DIR$/train.py" />
         <option value="$PROJECT_DIR$/use.py" />
+        <option value="$PROJECT_DIR$/train.py" />
+        <option value="$PROJECT_DIR$/Model/utils.py" />
+        <option value="$PROJECT_DIR$/Model/Layers.py" />
+        <option value="$PROJECT_DIR$/Model/inits.py" />
+        <option value="$PROJECT_DIR$/interpolation.py" />
         <option value="$PROJECT_DIR$/Model/AE.py" />
       </list>
     </option>
@@ -198,10 +236,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1912" />
-    <option name="y" value="-8" />
-    <option name="width" value="1456" />
-    <option name="height" value="876" />
+    <option name="x" value="-7" />
+    <option name="y" value="-7" />
+    <option name="width" value="1550" />
+    <option name="height" value="878" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -321,16 +359,16 @@
     <option name="totallyTimeSpent" value="6319000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1456" height="876" extended-state="6" />
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15472779" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15472779" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32891566" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.2091768" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3994602" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.23481782" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.048582997" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -356,57 +394,63 @@
   <component name="XDebuggerManager">
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="cheb[0]" language="Python" />
-        <watch expression="x" language="Python" />
-        <watch expression="cheb[i]" language="Python" />
-        <watch expression="tf.gather(cheb, i)" language="Python" />
+        <watch expression="scope" language="Python" />
+        <watch expression="self.test.name" language="Python" />
+        <watch expression="self.p_neighbour" language="Python" />
+        <watch expression="self.selfdot" language="Python" />
+        <watch expression="self" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
       <expression>
+        <expression-string>self.test.name</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>scope</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.sum(recover_data(self.acap, self.acapmin, self.acapmax, self.result_min, self.result_max) - self.acap_origin)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.p_neighbour</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.selfdot</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>tf.sqrt(self.selfdot_e) * self.maxlaplacian</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.maxlaplacian</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>tf.sqrt(self.selfdot_e)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>tf.reduce_sum(tf.sqrt(self.selfdot_e)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
         <expression-string>tf.gather(cheb, i)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>tf.gather_nd(cheb, i)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>cheb[0]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>type(self.cheb_e[0][1][0])</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>self.cheb_e</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>self.vars['weights_0']</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>cheb[i]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>x</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>self.vars['weights_' + str(i)]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -431,60 +475,70 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Model/Old_layers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
+        <state relative-caret-position="-150">
           <caret line="94" column="35" selection-start-line="94" selection-start-column="23" selection-end-line="94" selection-end-column="35" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Model/utils.py">
+    <entry file="file://$PROJECT_DIR$/Model/Layers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
-          <caret line="152" selection-start-line="152" selection-end-line="152" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <marker date="1561454542768" expanded="true" signature="814:823" ph="..." />
-          </folding>
+        <state relative-caret-position="25">
+          <caret line="18" column="30" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Model/inits.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        <state relative-caret-position="175">
+          <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Model/Layers.py">
+    <entry file="file://$PROJECT_DIR$/Model/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        <state relative-caret-position="374">
+          <caret line="155" column="20" selection-start-line="155" selection-start-column="20" selection-end-line="155" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <marker date="1561879743914" expanded="true" signature="837:846" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/train.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        <state relative-caret-position="50">
+          <caret line="2" column="49" selection-start-line="2" selection-start-column="49" selection-end-line="2" selection-end-column="49" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/use.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        <state relative-caret-position="150">
+          <caret line="6" selection-start-line="6" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/interpolation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="7" column="5" selection-start-line="7" selection-start-column="5" selection-end-line="7" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Model/AE.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4375">
-          <caret line="268" column="25" selection-start-line="268" selection-start-column="21" selection-end-line="268" selection-end-column="25" />
+        <state relative-caret-position="349">
+          <caret line="206" column="43" selection-start-line="206" selection-start-column="43" selection-end-line="206" selection-end-column="43" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
-            <marker date="1561457204351" expanded="true" signature="133:9505" ph="..." />
+            <marker date="1561966490046" expanded="true" signature="133:15785" ph="..." />
+            <marker date="1561966490046" expanded="true" signature="7470:10264" ph="..." />
+            <marker date="1561966490046" expanded="true" signature="15902:18219" ph="..." />
+            <marker date="1561966490046" expanded="true" signature="16582:16965" ph="..." />
           </folding>
         </state>
       </provider>
