@@ -8,17 +8,14 @@ import os
 
 class MeshAE:
     def __init__(self, matpath, gc_dim, fc_dim, max_degree=2, sparse=False, result_max=0.9, result_min=-0.9, ismap=False,
-                 lambda_laplace=0.5, adj_or_geo=0, laplacian_k_range=[10, 15]):
-        # self.logdr, self.s, self.e_neighbour, self.p_neighbour,\
-        #     self.degree, self.logdr_min, self.logdr_max, self.ds_min,\
-        #     self.ds_max, self.modelnum, self.pointnum, self.edgenum, self._old_maxdegree\
-        #     = load_data(matpath, result_min=result_min, result_max=result_max, logdr_ismap=True, s_ismap=False)
+                 lambda_laplace=0.5, adj_or_geo=0, laplacian_k_range=None):
+        if laplacian_k_range is None:
+            laplacian_k_range = [10, 15]
         self.ismap = ismap
         self.result_max = result_max
         self.result_min = result_min
 
-        self.vertex, self.acap, self.pointnum, self.p_adj, self.p_neighbour, self.acapmax, self.acapmin = load_acap(
-            matpath, result_min=result_min, result_max=result_max, ismap=self.ismap)
+        self.vertex, self.acap, self.pointnum, self.p_adj, self.cot, self.p_neighbour, self.acapmax, self.acapmin = load_acap(matpath, result_min=result_min, result_max=result_max, ismap=self.ismap)
 
         self.gc_dim = gc_dim
         self.fc_dim = fc_dim
@@ -36,7 +33,7 @@ class MeshAE:
         self.output_gt = tf.placeholder(tf.float32, [None, acap_shape[1], acap_shape[2]])
 
         """Get Chebyshev Sequence"""
-        self.cheb = chebyshev_polynomials(self.p_adj, self.max_degree)
+        self.cheb = chebyshev_polynomials(self.cot, self.max_degree)
         self.cheb_p = tf.sparse_placeholder(tf.float32)
 
         if not self.sparse:
@@ -138,7 +135,10 @@ class MeshAE:
                         total_lapla = []
                     self.saver.save(sess, self.save_folder, i)
 
-                    name_h5 = './mid_result/result' + str(i) + '.h5'
+                    mid_path = './mid_result'
+                    if not os.path.exists(mid_path):
+                        os.makedirs(mid_path)
+                    name_h5 = mid_path + '/result' + str(i) + '.h5'
                     print(name_h5)
                     f = h5py.File(name_h5, 'w')
                     gt_ = np.squeeze(output_gt)
@@ -341,8 +341,10 @@ class Decoder:
             print(self.activation[i])
 
 
-def get_laplacian_norm_by_adj(p_adj, fcpara_e, fcpara_d, pointnum, channel, fdim, k_range=[10, 15], decay_rate=.5):
+def get_laplacian_norm_by_adj(p_adj, fcpara_e, fcpara_d, pointnum, channel, fdim, k_range=None, decay_rate=.5):
     """Laplacian Loss up to degree k with specified decay rate"""
+    if k_range is None:
+        k_range = [10, 15]
     fcpara_group_e = tf.transpose(tf.reshape(fcpara_e, [pointnum, channel, fdim]),
                                   perm=[2, 0, 1])
     fcpara_group_d = tf.reshape(fcpara_d, [fdim, pointnum, channel])
@@ -433,6 +435,7 @@ def load_acap(path, result_max=0.9, result_min=-0.9, ismap=False):
     data = h5py.File(path)
     acap = data['acap']
     p_adj = np.transpose(data['p_adj'])
+    cot = np.transpose(data['cot'])
     vertex = np.transpose(data['vertex'])
     p_neighbour = np.transpose(data['p_neighbour'])
     pointnum = len(acap[0])
@@ -449,11 +452,11 @@ def load_acap(path, result_max=0.9, result_min=-0.9, ismap=False):
     else:
         acapnew = acap_x
 
-    return vertex, acapnew, pointnum, p_adj, p_neighbour, acapmax, acapmin
+    return vertex, acapnew, pointnum, p_adj, cot, p_neighbour, acapmax, acapmin
 
 
 def load_data(path, result_max=0.9, result_min=-0.9, logdr_ismap=False, s_ismap=False):
-    data = h5py.File(path)
+    data = h5py.File(path, "r")
     logdr = data['logdr']
     s = data['s']
     e_neighbour = data['e_neighbour']

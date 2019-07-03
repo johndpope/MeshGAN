@@ -1,8 +1,8 @@
 from Model.AE import *
 
 matpath = './Data/Dyna/mesh/50002_chicken_wings/ACAP_data.mat'
-gc_dim = [10, 10, 10]
-fc_dim = [1024, 512]
+gc_dim = [8, 16, 32]
+fc_dim = [512, 128]
 max_degree = 2
 
 epoch = 5000

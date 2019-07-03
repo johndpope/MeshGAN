@@ -1,4 +1,4 @@
-basemesh = '..\Data\Dyna\mesh\50002_chicken_wings\00000.obj';
+basemesh = '..\..\Dyna\mesh\50002_chicken_wings\00000.obj';
 
 [point_geodesic]=compute_geodesic_distance(basemesh);
 
